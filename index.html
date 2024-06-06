@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrossoutDB Items</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            cursor: pointer;
+        }
+        #filterInput {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>CrossoutDB Items</h1>
+    <input type="text" id="filterInput" placeholder="Filter items...">
+    <table id="itemsTable">
+        <thead>
+            <tr>
+                <th onclick="sortTable(0)">Name</th>
+                <th onclick="sortTable(1)">Rarity</th>
+                <th onclick="sortTable(2)">Sell Offers</th>
+                <th onclick="sortTable(3)">Sell Price</th>
+                <th onclick="sortTable(4)">Buy Orders</th>
+                <th onclick="sortTable(5)">Buy Price</th>
+                <th onclick="sortTable(6)">Margin</th>
+                <th onclick="sortTable(7)">ROI</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script src="script.js"></script>
+</body>
+</html>
