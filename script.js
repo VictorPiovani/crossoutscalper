@@ -4,11 +4,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableBody = document.querySelector('#itemsTable tbody');
 
     fetch(apiUrl)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
-            console.log('Data fetched:', data); // Adicione este log para verificar a resposta da API
-            const items = data.items;
-            if (items && items.length > 0) {
+            console.log('Data fetched:', data); // Log para verificar a resposta da API
+            if (data && data.items) {
+                const items = data.items;
                 displayItems(items);
 
                 filterInput.addEventListener('input', () => {
@@ -17,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     displayItems(filteredItems);
                 });
             } else {
-                console.error('No items found in data:', data); // Log de erro se items for undefined ou vazio
+                console.error('No items found in data:', data); // Log de erro se items não estiver presente
             }
         })
         .catch(error => console.error('Error fetching data:', error));
