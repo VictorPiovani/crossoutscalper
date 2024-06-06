@@ -6,14 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
+            console.log('Data fetched:', data); // Adicione este log para verificar a resposta da API
             const items = data.items;
-            displayItems(items);
+            if (items && items.length > 0) {
+                displayItems(items);
 
-            filterInput.addEventListener('input', () => {
-                const filteredItems = items.filter(item => 
-                    item.name.toLowerCase().includes(filterInput.value.toLowerCase()));
-                displayItems(filteredItems);
-            });
+                filterInput.addEventListener('input', () => {
+                    const filteredItems = items.filter(item => 
+                        item.name.toLowerCase().includes(filterInput.value.toLowerCase()));
+                    displayItems(filteredItems);
+                });
+            } else {
+                console.error('No items found in data:', data); // Log de erro se items for undefined ou vazio
+            }
         })
         .catch(error => console.error('Error fetching data:', error));
 
