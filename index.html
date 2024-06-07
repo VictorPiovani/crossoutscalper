@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CrossoutDB Items v3</title>
+    <title>CrossoutDB Items</title>
     <style>
         table {
             width: 100%;
@@ -22,22 +22,28 @@
             padding: 8px;
             width: 100%;
         }
+        .item-image {
+            width: 50px;
+            height: auto;
+        }
     </style>
 </head>
 <body>
-    <h1>CrossoutDB Items v3</h1>
+    <h1>CrossoutDB Items</h1>
     <input type="text" id="filterInput" placeholder="Filter items...">
     <table id="itemsTable">
         <thead>
             <tr>
-                <th onclick="sortTable(0)">Name</th>
-                <th onclick="sortTable(1)">Rarity</th>
-                <th onclick="sortTable(2)">Sell Offers</th>
-                <th onclick="sortTable(3)">Sell Price</th>
-                <th onclick="sortTable(4)">Buy Orders</th>
-                <th onclick="sortTable(5)">Buy Price</th>
-                <th onclick="sortTable(6)">Margin</th>
-                <th onclick="sortTable(7)">ROI</th>
+                <th>Image</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Rarity</th>
+                <th onclick="sortTable(3)">Sell Offers</th>
+                <th onclick="sortTable(4)">Sell Price</th>
+                <th onclick="sortTable(5)">Buy Orders</th>
+                <th onclick="sortTable(6)">Buy Price</th>
+                <th onclick="sortTable(7)">Margin</th>
+                <th onclick="sortTable(8)">ROI</th>
+                <th onclick="sortTable(9)">Popularity</th>
             </tr>
         </thead>
         <tbody>
