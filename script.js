@@ -33,19 +33,30 @@ document.addEventListener('DOMContentLoaded', () => {
         items.forEach(item => {
             const margin = item.sellPrice - item.buyPrice;
             const roi = (margin / item.buyPrice) * 100;
+            const imageUrl = `https://crossoutdb.com${item.imagePath}`;
 
             const row = document.createElement('tr');
             row.innerHTML = `
+                <td><img src="${imageUrl}" class="item-image" alt="${item.name}"></td>
                 <td>${item.name}</td>
                 <td>${item.rarityName}</td>
                 <td>${item.sellOffers}</td>
-                <td>${item.sellPrice}</td>
+                <td>${item.formatSellPrice}</td>
                 <td>${item.buyOrders}</td>
-                <td>${item.buyPrice}</td>
-                <td>${margin.toFixed(2)}</td>
-                <td>${roi.toFixed(2)}%</td>
+                <td>${item.formatBuyPrice}</td>
+                <td>${item.formatMargin}</td>
+                <td>${item.formatRoi}</td>
+                <td>${item.popularity}</td>
             `;
             tableBody.appendChild(row);
+        });
+
+        // Adicionar ordenação para as colunas
+        const headers = document.querySelectorAll('#itemsTable th');
+        headers.forEach((header, index) => {
+            header.addEventListener('click', () => {
+                sortTable(index);
+            });
         });
     }
 
@@ -63,12 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 x = rows[i].getElementsByTagName("TD")[n];
                 y = rows[i + 1].getElementsByTagName("TD")[n];
                 if (dir == "asc") {
-                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    if (parseFloat(x.innerHTML) > parseFloat(y.innerHTML)) {
                         shouldSwitch = true;
                         break;
                     }
                 } else if (dir == "desc") {
-                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
                         shouldSwitch = true;
                         break;
                     }
