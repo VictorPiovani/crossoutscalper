@@ -34,14 +34,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function populateFilters(items) {
         const rarities = [...new Set(items.map(item => item.rarityName))];
 
-        rarities.forEach(rarity => {
-            if (rarity) {
-                const option = document.createElement('option');
-                option.value = rarity;
-                option.text = rarity;
-                rarityFilter.appendChild(option);
-            }
-        });
+        if (rarityFilter) {
+            rarityFilter.innerHTML = '<option value="">All Rarities</option>';
+            rarities.forEach(rarity => {
+                if (rarity) {
+                    const option = document.createElement('option');
+                    option.value = rarity;
+                    option.text = rarity;
+                    rarityFilter.appendChild(option);
+                }
+            });
+        }
     }
 
     function displayItems(items) {
@@ -56,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             row.innerHTML = `
                 <td><img src="${imageUrl}" class="item-image" alt="${item.name}"></td>
                 <td>${item.name}</td>
-                <td>${item.rarityName}</td>
+                <td>${item.rarityName || 'Unknown'}</td>
                 <td>${item.sellOffers}</td>
                 <td>${item.formatSellPrice}</td>
                 <td>${item.buyOrders}</td>
