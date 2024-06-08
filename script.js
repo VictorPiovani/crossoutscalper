@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = '';
         items.forEach(item => {
             const margin = item.sellPrice - item.buyPrice;
-            const roi = (margin / item.buyPrice) * 100;
-            const profit = (item.sellPrice * 0.9) - item.buyPrice;
+            const roi = (margin / item.formatbuyPrice) * 100;
+            const profit = (item.formatSellPrice * 0.9) - item.formatbuyPrice;
             const imageUrl = `https://crossoutdb.com${item.imagePath}`;
 
             const row = document.createElement('tr');
