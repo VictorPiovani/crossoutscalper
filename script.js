@@ -64,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${item.formatSellPrice}</td>
                 <td>${item.buyOrders}</td>
                 <td>${item.formatBuyPrice}</td>
-                <td>${item.formatMargin}</td>
-                <td>${item.formatRoi}</td>
+                <td>${margin.toFixed(2)}</td>
+                <td>${roi.toFixed(2)}%</td>
                 <td>${profit.toFixed(2)}</td>
             `;
             tableBody.appendChild(row);
