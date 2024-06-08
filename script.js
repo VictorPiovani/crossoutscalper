@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const apiUrl = 'https://crossoutdb.com/api/v2/items';
-    const filterInput = document.getElementById('filterInput');
     const tableBody = document.querySelector('#itemsTable tbody');
+    const loader = document.getElementById('loader');
+    const itemsTable = document.getElementById('itemsTable');
+    const rarityFilter = document.getElementById('rarityFilter');
+    const popularityFilter = document.getElementById('popularityFilter');
 
     function fetchDataAndUpdateTable() {
         fetch(apiUrl)
@@ -14,18 +17,46 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 console.log('Data fetched:', data); // Log para verificar a resposta da API
                 if (Array.isArray(data) && data.length > 0) {
+                    populateFilters(data);
                     displayItems(data);
+                    loader.style.display = 'none';
+                    itemsTable.style.display = 'table';
 
-                    filterInput.addEventListener('input', () => {
-                        const filteredItems = data.filter(item => 
-                            item.name.toLowerCase().includes(filterInput.value.toLowerCase()));
-                        displayItems(filteredItems);
+                    rarityFilter.addEventListener('change', () => {
+                        filterItems(data);
+                    });
+
+                    popularityFilter.addEventListener('change', () => {
+                        filterItems(data);
                     });
                 } else {
                     console.error('No items found in data:', data); // Log de erro se data não for um array ou estiver vazio
                 }
             })
             .catch(error => console.error('Error fetching data:', error));
+    }
+
+    function populateFilters(items) {
+        const rarities = [...new Set(items.map(item => item.rarityName))];
+        const popularityLevels = [...new Set(items.map(item => item.popularity))];
+
+        rarities.forEach(rarity => {
+            if (rarity) {
+                const option = document.createElement('option');
+                option.value = rarity;
+                option.text = rarity;
+                rarityFilter.appendChild(option);
+            }
+        });
+
+        popularityLevels.forEach(level => {
+            if (level !== null) {
+                const option = document.createElement('option');
+                option.value = level;
+                option.text = `Popularity ${level}`;
+                popularityFilter.appendChild(option);
+            }
+        });
     }
 
     function displayItems(items) {
@@ -60,6 +91,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function filterItems(items) {
+        const rarity = rarityFilter.value;
+        const popularity = popularityFilter.value;
+
+        const filteredItems = items.filter(item => {
+            return (rarity === '' || item.rarityName === rarity) &&
+                   (popularity === '' || item.popularity == popularity);
+        });
+
+        displayItems(filteredItems);
+    }
+
     // Função para ordenar a tabela
     function sortTable(n) {
         const table = document.getElementById("itemsTable");
@@ -74,12 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 x = rows[i].getElementsByTagName("TD")[n];
                 y = rows[i + 1].getElementsByTagName("TD")[n];
                 if (dir == "asc") {
-                    if (parseFloat(x.innerHTML) > parseFloat(y.innerHTML)) {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
                         shouldSwitch = true;
                         break;
                     }
                 } else if (dir == "desc") {
-                    if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
                         shouldSwitch = true;
                         break;
                     }
