@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const loader = document.getElementById('loader');
     const itemsTable = document.getElementById('itemsTable');
     const rarityFilter = document.getElementById('rarityFilter');
-    const popularityFilter = document.getElementById('popularityFilter');
 
     function fetchDataAndUpdateTable() {
         fetch(apiUrl)
@@ -25,10 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     rarityFilter.addEventListener('change', () => {
                         filterItems(data);
                     });
-
-                    popularityFilter.addEventListener('change', () => {
-                        filterItems(data);
-                    });
                 } else {
                     console.error('No items found in data:', data); // Log de erro se data não for um array ou estiver vazio
                 }
@@ -38,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function populateFilters(items) {
         const rarities = [...new Set(items.map(item => item.rarityName))];
-        const popularityLevels = [...new Set(items.map(item => item.popularity))];
 
         rarities.forEach(rarity => {
             if (rarity) {
@@ -48,15 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 rarityFilter.appendChild(option);
             }
         });
-
-        popularityLevels.forEach(level => {
-            if (level !== null) {
-                const option = document.createElement('option');
-                option.value = level;
-                option.text = `Popularity ${level}`;
-                popularityFilter.appendChild(option);
-            }
-        });
     }
 
     function displayItems(items) {
@@ -64,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         items.forEach(item => {
             const margin = item.sellPrice - item.buyPrice;
             const roi = (margin / item.buyPrice) * 100;
+            const profit = (item.sellPrice * 0.9) - item.buyPrice;
             const imageUrl = `https://crossoutdb.com${item.imagePath}`;
 
             const row = document.createElement('tr');
@@ -77,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${item.formatBuyPrice}</td>
                 <td>${item.formatMargin}</td>
                 <td>${item.formatRoi}</td>
-                <td>${item.popularity}</td>
+                <td>${profit.toFixed(2)}</td>
             `;
             tableBody.appendChild(row);
         });
@@ -93,11 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function filterItems(items) {
         const rarity = rarityFilter.value;
-        const popularity = popularityFilter.value;
 
         const filteredItems = items.filter(item => {
-            return (rarity === '' || item.rarityName === rarity) &&
-                   (popularity === '' || item.popularity == popularity);
+            return rarity === '' || item.rarityName === rarity;
         });
 
         displayItems(filteredItems);
@@ -117,12 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 x = rows[i].getElementsByTagName("TD")[n];
                 y = rows[i + 1].getElementsByTagName("TD")[n];
                 if (dir == "asc") {
-                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    if (parseFloat(x.innerHTML) > parseFloat(y.innerHTML)) {
                         shouldSwitch = true;
                         break;
                     }
                 } else if (dir == "desc") {
-                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
                         shouldSwitch = true;
                         break;
                     }
